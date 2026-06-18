@@ -65,7 +65,7 @@ const shios = {
   anjing: 'assets/shio/ANJING.png',
   babi: 'assets/shio/BABI.png'
 };
-
+/*
 async function generateImage(){
   const bgName = document.getElementById('background').value;
   const shioName = document.getElementById('shio').value;
@@ -79,6 +79,44 @@ async function generateImage(){
     drawData();
     drawShio(shioName);
   };
+}
+*/
+
+function render() {
+
+  const bgName =
+    document.getElementById("background").value;
+
+  const shioName =
+    document.getElementById("shio").value;
+
+  const bg = new Image();
+
+  bg.src = backgrounds[bgName];
+
+  bg.onload = () => {
+
+    ctx.clearRect(
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    ctx.drawImage(
+      bg,
+      0,
+      0,
+      canvas.width,
+      canvas.height
+    );
+
+    drawData();
+
+    drawShio(shioName);
+
+  };
+
 }
 
 function drawData(){
@@ -106,3 +144,23 @@ function downloadImage(){
   link.href = canvas.toDataURL('image/png');
   link.click();
 }
+
+document
+  .querySelectorAll(
+    "input, textarea, select"
+  )
+  .forEach(el => {
+
+    el.addEventListener(
+      "input",
+      render
+    );
+
+    el.addEventListener(
+      "change",
+      render
+    );
+
+  });
+
+render();
