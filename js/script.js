@@ -51,6 +51,7 @@ const backgrounds = {
 };
 
 const shios = {
+  none: null,
   tikus: 'assets/shio/TIKUS.png',
   kerbau: 'assets/shio/KERBAU.png',
   harimau: 'assets/shio/HARIMAU.png',
