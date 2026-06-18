@@ -2,7 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 /* =======================
-   DATE SYSTEM (BARU)
+   DATE SYSTEM
 ======================= */
 const dateRules = {
   alaska: 1,
@@ -22,69 +22,30 @@ function formatDate(date){
   const d = String(date.getDate()).padStart(2, '0');
   const m = String(date.getMonth() + 1).padStart(2, '0');
   const y = date.getFullYear();
-
   return `${d}-${m}-${y}`;
 }
 
 function getTanggalByBg(bgName){
   const date = new Date();
-
   const offset = dateRules[bgName] || 0;
-
   date.setDate(date.getDate() + offset);
-
   return formatDate(date);
 }
-/* ======================= */
 
-
+/* =======================
+   ASSETS
+======================= */
 const backgrounds = {
   alaska: 'assets/background/alaska.jpg',
-  alberta: 'assets/background/alberta.jpg',
   atlanta: 'assets/background/atlanta.jpg',
-  baghdad: 'assets/background/baghdad.jpg',
-  boston: 'assets/background/boston.jpg',
-  bullseye: 'assets/background/bullseye.jpg',
-  cambodia: 'assets/background/cambodia.jpg',
-  capetown: 'assets/background/capetown.jpg',
   carolina: 'assets/background/carolina.jpg',
-  ceko: 'assets/background/ceko.jpg',
-  china: 'assets/background/china.jpg',
-  gaza: 'assets/background/gaza.jpg',
-  hongkong: 'assets/background/hongkong.jpg',
-  jakarta: 'assets/background/jakarta.jpg',
-  japan: 'assets/background/japan.jpg',
-  kairo: 'assets/background/kairo.jpg',
-  kanada: 'assets/background/kanada.jpg',
-  kanagawa: 'assets/background/kanagawa.jpg',
-  kazan: 'assets/background/kazan.jpg',
   kentucky: 'assets/background/kentucky.jpg',
-  kkmalam: 'assets/background/kkmalam.jpg',
-  kksore: 'assets/background/kksore.jpg',
-  norwegia: 'assets/background/norwegia.jpg',
-  nusa: 'assets/background/nusa.jpg',
   oregon12: 'assets/background/oregon12.jpg',
   oregon9: 'assets/background/oregon9.jpg',
   oregon6: 'assets/background/oregon6.jpg',
   oregon3: 'assets/background/oregon3.jpg',
-  pcso: 'assets/background/pcso.jpg',
-  porto: 'assets/background/porto.jpg',
-  pyongyang: 'assets/background/pyongyang.jpg',
-  singapore: 'assets/background/singapore.jpg',
-  sydney: 'assets/background/sydney.jpg',
-  taiwan: 'assets/background/taiwan.jpg',
   '4d6': 'assets/background/4d6.jpg',
-  '4d5': 'assets/background/4d5.jpg',
-  '4d4': 'assets/background/4d4.jpg',
-  '4d3': 'assets/background/4d3.jpg',
-  '4d2': 'assets/background/4d2.jpg',
-  '4d1': 'assets/background/4d1.jpg',
-  '5dmalam': 'assets/background/5dmalam.jpg',
-  '5dsore': 'assets/background/5dsore.jpg',
-  venice: 'assets/background/venice.jpg',
-  verona: 'assets/background/verona.jpg',
-  virginia: 'assets/background/virginia.jpg',
-  washington: 'assets/background/washington.jpg'
+  virginia: 'assets/background/virginia.jpg'
 };
 
 const shios = {
@@ -103,120 +64,178 @@ const shios = {
   babi: 'assets/shio/BABI.png'
 };
 
-function render() {
+/* =======================
+   STATE
+======================= */
+const state = {
+  kep: '',
+  ekor: '',
+  cm: '',
+  cb: '',
+  bbfs: '',
+  top2d: '',
+  topN: '',
+  pastResult: '',
+  background: '',
+  shio: ''
+};
 
-  const bgName = document.getElementById("background").value;
-  const shioName = document.getElementById("shio").value;
+/* =======================
+   CLEANER (FIX UTAMA DI SINI)
+======================= */
 
-  const bg = new Image();
-  bg.src = backgrounds[bgName];
+// hanya hapus TOP2D / TOP4D / TOP5D
+const forbidden = /top\s*[245]\s*d/gi;
 
-  bg.onload = () => {
+// angka saja
+const cleanNumber = val => String(val).replace(/[^0-9]/g, '');
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
-
-    drawData(bgName);      // 🔥 UDAH PAKAI BGNAME
-    drawShio(shioName);
-
-  };
+// dash + angka + hapus keyword topXd
+function cleanDash(val) {
+  return String(val)
+    .replace(forbidden, '')   // hanya top2d/top4d/top5d
+    .replace(/[^0-9-]/g, '')   // angka + dash
+    .replace(/-+/g, '-')       // rapikan dash
+    .replace(/^-+/, '');       // hapus dash depan
 }
 
-const myriad = new FontFace(
-  'Myriad Pro Bold',
-  'url(assets/font/Myriad Pro Bold.ttf)'
-);
+/* =======================
+   INPUT BIND (STABLE)
+======================= */
+function bind(id, key, cleaner) {
+  const el = document.getElementById(id);
+  if (!el) return;
 
-myriad.load().then(function(font) {
-  document.fonts.add(font);
+  function apply(val) {
+    const cleaned = cleaner(val);
+    state[key] = cleaned;
+    el.value = cleaned;
+    render();
+  }
 
-  render();
-});
+  el.addEventListener('input', () => {
+    apply(el.value);
+  });
 
+  el.addEventListener('paste', (e) => {
+    e.preventDefault();
+    let text = (e.clipboardData || window.clipboardData).getData('text');
+    apply(text);
+  });
+}
 
+/* =======================
+   DRAW
+======================= */
 function drawData(bgName){
+
   ctx.fillStyle = '#FFD700';
   ctx.font = 'bold 24px Myriad Pro Bold';
 
   const tanggal = getTanggalByBg(bgName);
 
-  ctx.fillText(tanggal,55,110);
-  ctx.fillText(document.getElementById('kep').value,90,170);
-  ctx.fillText(document.getElementById('ekor').value,90,230);
-  ctx.fillText(document.getElementById('cm').value,85,293);
-  ctx.fillText(document.getElementById('bbfs').value,205,180);
-  ctx.fillText(document.getElementById('cb').value,228,270);
-  drawTop2D(document.getElementById('top2d').value,530,180);
-  drawTopN(document.getElementById('topN').value,660,180);
-  ctx.fillText(document.getElementById('pastResult').value,660,315);
+  ctx.fillText(tanggal, 55, 110);
+
+  ctx.fillText(state.kep, 90, 170);
+  ctx.fillText(state.ekor, 90, 230);
+  ctx.fillText(state.cm, 85, 293);
+
+  ctx.fillText(state.bbfs, 205, 180);
+  ctx.fillText(state.cb, 228, 270);
+
+  drawTop2D(state.top2d, 530, 180);
+  drawTopN(state.topN, 660, 180);
+
+  ctx.fillText(state.pastResult, 660, 315);
 }
 
 function drawTop2D(text, x, y, lineHeight = 30){
 
-  const items = String(text)
-    .split('-')
-    .filter(item => item.trim() !== '');
+  const items = String(text).split('-').filter(Boolean);
 
   for(let i = 0; i < items.length; i += 2){
-
-    const pair =
-      `${items[i]}-${items[i + 1] || ''}`;
-
-    ctx.fillText(
-      pair,
-      x,
-      y + ((i / 2) * lineHeight)
-    );
+    const pair = `${items[i]}-${items[i+1] || ''}`;
+    ctx.fillText(pair, x, y + ((i/2) * lineHeight));
   }
 }
 
 function drawTopN(text, x, y, lineHeight = 24){
 
-  const items = String(text)
-    .split('-')
-    .filter(item => item.trim() !== '');
+  const items = String(text).split('-').filter(Boolean);
 
-  items.forEach((item, index) => {
-
-    ctx.fillText(
-      item.trim(),
-      x,
-      y + (index * lineHeight)
-    );
-
+  items.forEach((item, i) => {
+    ctx.fillText(item, x, y + (i * lineHeight));
   });
 }
 
 function drawShio(name){
+  if (!shios[name]) return;
+
   const img = new Image();
   img.src = shios[name];
 
   img.onload = () => {
-    ctx.drawImage(img,330,180,150,150);
+    ctx.drawImage(img, 330, 180, 150, 150);
   };
 }
 
-function downloadImage(){
+/* =======================
+   RENDER (SAFE)
+======================= */
+function render(){
 
-  const select =
-    document.getElementById("background");
+  const bgName =
+    state.background || document.getElementById('background')?.value;
 
-  const namaPasaran =
-    select.options[select.selectedIndex].text;
+  const shioName =
+    state.shio || document.getElementById('shio')?.value;
 
-  const link = document.createElement('a');
+  const bgSrc = backgrounds[bgName];
+  if (!bgSrc) return;
 
-  link.download = namaPasaran + '.png';
+  const bg = new Image();
 
-  link.href = canvas.toDataURL('image/png');
+  bg.onload = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-  link.click();
+    drawData(bgName);
+    drawShio(shioName);
+  };
+
+  bg.src = bgSrc;
 }
 
-document.querySelectorAll("input, textarea, select").forEach(el => {
-  el.addEventListener("input", render);
-  el.addEventListener("change", render);
+/* =======================
+   INIT INPUTS
+======================= */
+bind('bbfs', 'bbfs', cleanNumber);
+bind('pastResult', 'pastResult', cleanNumber);
+
+bind('kep', 'kep', cleanDash);
+bind('ekor', 'ekor', cleanDash);
+bind('cm', 'cm', cleanDash);
+bind('cb', 'cb', cleanDash);
+bind('top2d', 'top2d', cleanDash);
+bind('topN', 'topN', cleanDash);
+
+/* =======================
+   SELECT EVENTS
+======================= */
+document.getElementById('background').addEventListener('change', e => {
+  state.background = e.target.value;
+  render();
 });
+
+document.getElementById('shio').addEventListener('change', e => {
+  state.shio = e.target.value;
+  render();
+});
+
+/* =======================
+   START
+======================= */
+state.background = document.getElementById('background')?.value;
+state.shio = document.getElementById('shio')?.value;
 
 render();
