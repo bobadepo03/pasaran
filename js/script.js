@@ -147,17 +147,45 @@ function drawData(bgName){
   ctx.fillText(document.getElementById('cm').value,85,293);
   ctx.fillText(document.getElementById('bbfs').value,205,180);
   ctx.fillText(document.getElementById('cb').value,228,270);
-  drawMultiline(document.getElementById('top2d').value,530,180);
-  drawMultiline(document.getElementById('topN').value,660,180);
+  drawTop2D(document.getElementById('top2d').value,530,180);
+  drawTopN(document.getElementById('topN').value,660,180);
   ctx.fillText(document.getElementById('pastResult').value,660,315);
 }
 
-function drawMultiline(text, x, y, lineHeight = 28) {
-  const lines = String(text).split('\n');
+function drawTop2D(text, x, y, lineHeight = 30){
 
-  for (let i = 0; i < lines.length; i++) {
-    ctx.fillText(lines[i], x, y + (i * lineHeight));
+  const items = String(text)
+    .split('-')
+    .filter(item => item.trim() !== '');
+
+  for(let i = 0; i < items.length; i += 2){
+
+    const pair =
+      `${items[i]}-${items[i + 1] || ''}`;
+
+    ctx.fillText(
+      pair,
+      x,
+      y + ((i / 2) * lineHeight)
+    );
   }
+}
+
+function drawTopN(text, x, y, lineHeight = 24){
+
+  const items = String(text)
+    .split('-')
+    .filter(item => item.trim() !== '');
+
+  items.forEach((item, index) => {
+
+    ctx.fillText(
+      item.trim(),
+      x,
+      y + (index * lineHeight)
+    );
+
+  });
 }
 
 function drawShio(name){
