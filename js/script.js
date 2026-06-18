@@ -2,13 +2,23 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 const backgrounds = {
-  macau4d: 'assets/background/macau4d.png',
-  macau5d: 'assets/background/macau5d.png'
+  macau4d: 'assets/background/4d1.jpg',
+  macau5d: 'assets/background/5dsore.jpg'
 };
 
 const shios = {
-  kuda: 'assets/shio/kuda.png',
-  naga: 'assets/shio/naga.png'
+  tikus: 'assets/shio/TIKUS.png',
+  kerbau: 'assets/shio/KERBAU.png',
+  harimau: 'assets/shio/HARIMAU.png',
+  kelinci: 'assets/shio/KELINCI.png',
+  naga: 'assets/shio/NAGA.png',
+  ular: 'assets/shio/ULAR.png',
+  kuda: 'assets/shio/KUDA.png',
+  kambing: 'assets/shio/KAMBING.png',
+  monyet: 'assets/shio/MONYET.png',
+  ayam: 'assets/shio/AYAM.png',
+  anjing: 'assets/shio/ANJING.png',
+  babi: 'assets/shio/BABI.png'
 };
 
 async function generateImage(){
