@@ -1,6 +1,43 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+/* =======================
+   DATE SYSTEM (BARU)
+======================= */
+const dateRules = {
+  alaska: 1,
+  atlanta: 1,
+  carolina: 1,
+  kentucky: 1,
+  oregon12: 1,
+  oregon9: 1,
+  oregon6: 1,
+  oregon3: 1,
+  '4d6': 1,
+  virginia: 1,
+  default: 0
+};
+
+function formatDate(date){
+  const d = String(date.getDate()).padStart(2, '0');
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const y = date.getFullYear();
+
+  return `${d}-${m}-${y}`;
+}
+
+function getTanggalByBg(bgName){
+  const date = new Date();
+
+  const offset = dateRules[bgName] || 0;
+
+  date.setDate(date.getDate() + offset);
+
+  return formatDate(date);
+}
+/* ======================= */
+
+
 const backgrounds = {
   alaska: 'assets/background/alaska.jpg',
   alberta: 'assets/background/alberta.jpg',
@@ -65,68 +102,62 @@ const shios = {
   anjing: 'assets/shio/ANJING.png',
   babi: 'assets/shio/BABI.png'
 };
-/*
-async function generateImage(){
-  const bgName = document.getElementById('background').value;
-  const shioName = document.getElementById('shio').value;
-
-  const bg = new Image();
-  bg.src = backgrounds[bgName];
-
-  bg.onload = () => {
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.drawImage(bg,0,0,800,450);
-    drawData();
-    drawShio(shioName);
-  };
-}
-*/
 
 function render() {
 
-  const bgName =
-    document.getElementById("background").value;
-
-  const shioName =
-    document.getElementById("shio").value;
+  const bgName = document.getElementById("background").value;
+  const shioName = document.getElementById("shio").value;
 
   const bg = new Image();
-
   bg.src = backgrounds[bgName];
 
   bg.onload = () => {
 
-    ctx.clearRect(
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    ctx.drawImage(
-      bg,
-      0,
-      0,
-      canvas.width,
-      canvas.height
-    );
+    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
-    drawData();
-
+    drawData(bgName);      // 🔥 UDAH PAKAI BGNAME
     drawShio(shioName);
 
   };
-
 }
 
-function drawData(){
-  ctx.fillStyle = '#FFD700';
-  ctx.font = 'bold 24px Arial';
+const myriad = new FontFace(
+  'Myriad Pro Bold',
+  'url(assets/font/Myriad Pro Bold.ttf)'
+);
 
-  ctx.fillText(document.getElementById('tanggal').value,40,90);
-  ctx.fillText(document.getElementById('kep').value,90,140);
+myriad.load().then(function(font) {
+  document.fonts.add(font);
+
+  render();
+});
+
+
+function drawData(bgName){
+  ctx.fillStyle = '#FFD700';
+  ctx.font = 'bold 24px Myriad Pro Bold';
+
+  const tanggal = getTanggalByBg(bgName);
+
+  ctx.fillText(tanggal,55,110);
+  ctx.fillText(document.getElementById('kep').value,90,170);
   ctx.fillText(document.getElementById('ekor').value,90,230);
-  ctx.fillText(document.getElementById('cm').value,90,330);
+  ctx.fillText(document.getElementById('cm').value,85,293);
+  ctx.fillText(document.getElementById('bbfs').value,205,180);
+  ctx.fillText(document.getElementById('cb').value,228,270);
+  drawMultiline(document.getElementById('top2d').value,530,180);
+  drawMultiline(document.getElementById('topN').value,660,180);
+  ctx.fillText(document.getElementById('pastResult').value,660,315);
+}
+
+function drawMultiline(text, x, y, lineHeight = 28) {
+  const lines = String(text).split('\n');
+
+  for (let i = 0; i < lines.length; i++) {
+    ctx.fillText(lines[i], x, y + (i * lineHeight));
+  }
 }
 
 function drawShio(name){
@@ -134,33 +165,30 @@ function drawShio(name){
   img.src = shios[name];
 
   img.onload = () => {
-    ctx.drawImage(img,330,110,150,150);
+    ctx.drawImage(img,330,180,150,150);
   };
 }
 
 function downloadImage(){
+
+  const select =
+    document.getElementById("background");
+
+  const namaPasaran =
+    select.options[select.selectedIndex].text;
+
   const link = document.createElement('a');
-  link.download = 'bobatoto.png';
+
+  link.download = namaPasaran + '.png';
+
   link.href = canvas.toDataURL('image/png');
+
   link.click();
 }
 
-document
-  .querySelectorAll(
-    "input, textarea, select"
-  )
-  .forEach(el => {
-
-    el.addEventListener(
-      "input",
-      render
-    );
-
-    el.addEventListener(
-      "change",
-      render
-    );
-
-  });
+document.querySelectorAll("input, textarea, select").forEach(el => {
+  el.addEventListener("input", render);
+  el.addEventListener("change", render);
+});
 
 render();
