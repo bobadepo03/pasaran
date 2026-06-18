@@ -1,0 +1,21 @@
+body{
+  background:#111;
+  color:#fff;
+  font-family:Arial,sans-serif;
+}
+.container{
+  display:flex;
+  gap:20px;
+}
+.form{
+  width:300px;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+input,select,textarea{
+  padding:8px;
+}
+canvas{
+  border:1px solid #444;
+}

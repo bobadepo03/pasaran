@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Generator Bobatoto</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="container">
+  <div class="form">
+    <select id="background">
+      <option value="macau4d">Macau 4D</option>
+      <option value="macau5d">Macau 5D</option>
+    </select>
+
+    <select id="shio">
+      <option value="kuda">Kuda</option>
+      <option value="naga">Naga</option>
+    </select>
+
+    <input id="tanggal" placeholder="Tanggal">
+    <input id="kep" placeholder="KEP">
+    <input id="ekor" placeholder="EKOR">
+    <input id="cm" placeholder="CM">
+    <input id="bbfs" placeholder="TOP BBFS">
+    <input id="cb" placeholder="CB">
+    <textarea id="top2d" placeholder="TOP 2D"></textarea>
+    <textarea id="topN" placeholder="TOP 4D / TOP 5D"></textarea>
+    <input id="pastResult" placeholder="Past Result">
+
+    <button onclick="generateImage()">Generate</button>
+    <button onclick="downloadImage()">Download</button>
+  </div>
+
+  <canvas id="canvas" width="800" height="450"></canvas>
+</div>
+
+<script src="js/script.js"></script>
+</body>
+</html>
