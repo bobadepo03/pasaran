@@ -100,6 +100,23 @@ const shios = {
   babi: 'assets/shio/BABI.png'
 };
 
+function downloadImage(){
+
+  const select =
+    document.getElementById("background");
+
+  const namaPasaran =
+    select.options[select.selectedIndex].text;
+
+  const link = document.createElement('a');
+
+  link.download = namaPasaran + '.png';
+
+  link.href = canvas.toDataURL('image/png');
+
+  link.click();
+}
+
 /* =======================
    STATE
 ======================= */
