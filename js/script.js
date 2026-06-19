@@ -102,17 +102,29 @@ const shios = {
 
 function downloadImage(){
 
-  const select =
-    document.getElementById("background");
+  const select = document.getElementById("background");
+  const namaPasaran = select.options[select.selectedIndex].text;
 
-  const namaPasaran =
-    select.options[select.selectedIndex].text;
+  // 🔥 bikin canvas sementara untuk HD
+  const scale = 2; // 2x = HD (kayak Photoshop high quality)
+
+  const tempCanvas = document.createElement('canvas');
+  tempCanvas.width = canvas.width * scale;
+  tempCanvas.height = canvas.height * scale;
+
+  const tempCtx = tempCanvas.getContext('2d');
+
+  // scale biar semua gambar & text ikut naik kualitas
+  tempCtx.scale(scale, scale);
+
+  tempCtx.drawImage(canvas, 0, 0);
 
   const link = document.createElement('a');
 
-  link.download = namaPasaran + '.png';
+  link.download = `${namaPasaran}.jpg`;
 
-  link.href = canvas.toDataURL('image/png');
+  // 🔥 JPG QUALITY (0.92–1 = highest ala Photoshop)
+  link.href = tempCanvas.toDataURL('image/jpeg', 0.98);
 
   link.click();
 }
