@@ -261,7 +261,20 @@ function drawShio(name){
   img.src = shios[name];
 
   img.onload = () => {
-    ctx.drawImage(img, 330, 180, 150, 150);
+
+    if (name === 'ayam') {
+      ctx.drawImage(img, 330, 180, 130, 170);
+      return;
+    }
+
+    if (name === 'kuda') {
+      ctx.drawImage(img, 345, 180, 130, 170);
+      return;
+    }
+
+    // default semua shio lain
+    ctx.drawImage(img, 335, 180, 130, 170);
+
   };
 }
 
