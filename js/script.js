@@ -37,15 +37,51 @@ function getTanggalByBg(bgName){
 ======================= */
 const backgrounds = {
   alaska: 'assets/background/alaska.jpg',
+  alberta: 'assets/background/alberta.jpg',
   atlanta: 'assets/background/atlanta.jpg',
+  baghdad: 'assets/background/baghdad.jpg',
+  boston: 'assets/background/boston.jpg',
+  bullseye: 'assets/background/bullseye.jpg',
+  cambodia: 'assets/background/cambodia.jpg',
+  capetown: 'assets/background/capetown.jpg',
   carolina: 'assets/background/carolina.jpg',
+  ceko: 'assets/background/ceko.jpg',
+  china: 'assets/background/china.jpg',
+  gaza: 'assets/background/gaza.jpg',
+  hongkong: 'assets/background/hongkong.jpg',
+  jakarta: 'assets/background/jakarta.jpg',
+  japan: 'assets/background/japan.jpg',
+  kairo: 'assets/background/kairo.jpg',
+  kanada: 'assets/background/kanada.jpg',
+  kanagawa: 'assets/background/kanagawa.jpg',
+  kazan: 'assets/background/kazan.jpg',
   kentucky: 'assets/background/kentucky.jpg',
+  kkmalam: 'assets/background/kkmalam.jpg',
+  kksore: 'assets/background/kksore.jpg',
+  norwegia: 'assets/background/norwegia.jpg',
+  nusa: 'assets/background/nusa.jpg',
   oregon12: 'assets/background/oregon12.jpg',
   oregon9: 'assets/background/oregon9.jpg',
   oregon6: 'assets/background/oregon6.jpg',
   oregon3: 'assets/background/oregon3.jpg',
+  pcso: 'assets/background/pcso.jpg',
+  porto: 'assets/background/porto.jpg',
+  pyongyang: 'assets/background/pyongyang.jpg',
+  singapore: 'assets/background/singapore.jpg',
+  sydney: 'assets/background/sydney.jpg',
+  taiwan: 'assets/background/taiwan.jpg',
   '4d6': 'assets/background/4d6.jpg',
-  virginia: 'assets/background/virginia.jpg'
+  '4d5': 'assets/background/4d5.jpg',
+  '4d4': 'assets/background/4d4.jpg',
+  '4d3': 'assets/background/4d3.jpg',
+  '4d2': 'assets/background/4d2.jpg',
+  '4d1': 'assets/background/4d1.jpg',
+  '5dmalam': 'assets/background/5dmalam.jpg',
+  '5dsore': 'assets/background/5dsore.jpg',
+  venice: 'assets/background/venice.jpg',
+  verona: 'assets/background/verona.jpg',
+  virginia: 'assets/background/virginia.jpg',
+  washington: 'assets/background/washington.jpg'
 };
 
 const shios = {
@@ -80,13 +116,31 @@ const state = {
   shio: ''
 };
 
+const layoutDefault = {
+  topN: { x: 660, y: 180 },
+  bbfs: { x: 205, y: 180 },
+  pastResult: { x: 660, y: 315 }
+};
+
+const layoutMap = {
+  '5dmalam': {
+    topN: { x: 655, y: 180 },
+    bbfs: { x: 200, y: 180 },
+    pastResult: { x: 655, y: 315 }
+  },
+  '5dsore': {
+    topN: { x: 655, y: 180 },
+    bbfs: { x: 200, y: 180 },
+    pastResult: { x: 655, y: 315 }
+  }
+};
+
 /* =======================
    CLEANER (FIX UTAMA DI SINI)
 ======================= */
 
 // hanya hapus TOP2D / TOP4D / TOP5D
 const forbidden = /top\s*[245]\s*d/gi;
-
 // angka saja
 const cleanNumber = val => String(val).replace(/[^0-9]/g, '');
 
@@ -139,14 +193,17 @@ function drawData(bgName){
   ctx.fillText(state.kep, 90, 170);
   ctx.fillText(state.ekor, 90, 230);
   ctx.fillText(state.cm, 85, 293);
-
-  ctx.fillText(state.bbfs, 205, 180);
   ctx.fillText(state.cb, 228, 270);
 
   drawTop2D(state.top2d, 530, 180);
-  drawTopN(state.topN, 660, 180);
 
-  ctx.fillText(state.pastResult, 660, 315);
+  const layout = layoutMap[bgName] || layoutDefault;
+
+drawTopN(state.topN, layout.topN.x, layout.topN.y);
+
+ctx.fillText(state.bbfs, layout.bbfs.x, layout.bbfs.y);
+
+ctx.fillText(state.pastResult, layout.pastResult.x, layout.pastResult.y);
 }
 
 function drawTop2D(text, x, y, lineHeight = 30){
