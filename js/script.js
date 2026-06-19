@@ -105,8 +105,7 @@ function downloadImage(){
   const select = document.getElementById("background");
   const namaPasaran = select.options[select.selectedIndex].text;
 
-  // 🔥 bikin canvas sementara untuk HD
-  const scale = 2; // 2x = HD (kayak Photoshop high quality)
+  const scale = 2;
 
   const tempCanvas = document.createElement('canvas');
   tempCanvas.width = canvas.width * scale;
@@ -114,19 +113,20 @@ function downloadImage(){
 
   const tempCtx = tempCanvas.getContext('2d');
 
-  // scale biar semua gambar & text ikut naik kualitas
-  tempCtx.scale(scale, scale);
-
+  tempCtx.setTransform(scale, 0, 0, scale, 0, 0);
   tempCtx.drawImage(canvas, 0, 0);
 
-  const link = document.createElement('a');
+  const dataURL = tempCanvas.toDataURL("image/jpeg", 0.98);
 
+  const link = document.createElement('a');
+  link.href = dataURL;
+
+  // 🔥 FORCE EXTENSION JPG
   link.download = `${namaPasaran}.jpg`;
 
-  // 🔥 JPG QUALITY (0.92–1 = highest ala Photoshop)
-  link.href = tempCanvas.toDataURL('image/jpeg', 0.98);
-
+  document.body.appendChild(link);
   link.click();
+  document.body.removeChild(link);
 }
 
 /* =======================
