@@ -334,7 +334,36 @@ bind('topN', 'topN', cleanDash);
    SELECT EVENTS
 ======================= */
 document.getElementById('background').addEventListener('change', e => {
+
   state.background = e.target.value;
+
+  // reset state
+  state.kep = '';
+  state.ekor = '';
+  state.cm = '';
+  state.cb = '';
+  state.bbfs = '';
+  state.top2d = '';
+  state.topN = '';
+  state.pastResult = '';
+  state.shio = 'none';
+
+  // reset textbox
+  document.getElementById('kep').value = '';
+  document.getElementById('ekor').value = '';
+  document.getElementById('cm').value = '';
+  document.getElementById('cb').value = '';
+  document.getElementById('bbfs').value = '';
+  document.getElementById('top2d').value = '';
+  document.getElementById('topN').value = '';
+  document.getElementById('pastResult').value = '';
+
+  // reset dropdown shio
+  document.getElementById('shio').value = 'none';
+
+  // bersihkan canvas
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
   render();
 });
 
