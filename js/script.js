@@ -202,6 +202,20 @@ function cleanDash(val) {
 }
 
 /* =======================
+   RENDER DEBOUNCE
+======================= */
+
+let renderTimer = null;
+
+function requestRender(){
+
+    clearTimeout(renderTimer);
+
+    renderTimer = setTimeout(render, 16);
+
+}
+
+/* =======================
    INPUT BIND (STABLE)
 ======================= */
 function bind(id, key, cleaner) {
@@ -212,7 +226,7 @@ function bind(id, key, cleaner) {
     const cleaned = cleaner(val);
     state[key] = cleaned;
     el.value = cleaned;
-    render();
+    requestRender();
   }
 
   el.addEventListener('input', () => {
