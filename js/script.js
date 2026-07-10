@@ -122,33 +122,40 @@ const shios = {
   babi: 'assets/shio/BABI.png'
 };
 
-function downloadImage(){
+function downloadImage() {
 
   const select = document.getElementById("background");
   const namaPasaran = select.options[select.selectedIndex].text;
 
   const scale = 2;
 
-  const tempCanvas = document.createElement('canvas');
+  const tempCanvas = document.createElement("canvas");
   tempCanvas.width = canvas.width * scale;
   tempCanvas.height = canvas.height * scale;
 
-  const tempCtx = tempCanvas.getContext('2d');
+  const tempCtx = tempCanvas.getContext("2d");
 
   tempCtx.setTransform(scale, 0, 0, scale, 0, 0);
   tempCtx.drawImage(canvas, 0, 0);
 
-  const dataURL = tempCanvas.toDataURL("image/jpeg", 0.98);
+  tempCanvas.toBlob(function(blob) {
 
-  const link = document.createElement('a');
-  link.href = dataURL;
+    if (!blob) return;
 
-  // 🔥 FORCE EXTENSION JPG
-  link.download = `${namaPasaran}.jpg`;
+    const url = URL.createObjectURL(blob);
 
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `${namaPasaran}.png`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    setTimeout(() => URL.revokeObjectURL(url), 100);
+
+  }, "image/png");
+
 }
 
 /* =======================
