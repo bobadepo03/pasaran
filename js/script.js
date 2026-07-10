@@ -108,18 +108,18 @@ const shioCache = {};
 
 const shios = {
   none: null,
-  tikus: 'assets/shio/TIKUS.png',
-  kerbau: 'assets/shio/KERBAU.png',
-  harimau: 'assets/shio/HARIMAU.png',
-  kelinci: 'assets/shio/KELINCI.png',
-  naga: 'assets/shio/NAGA.png',
-  ular: 'assets/shio/ULAR.png',
-  kuda: 'assets/shio/KUDA.png',
-  kambing: 'assets/shio/KAMBING.png',
-  monyet: 'assets/shio/MONYET.png',
-  ayam: 'assets/shio/AYAM.png',
-  anjing: 'assets/shio/ANJING.png',
-  babi: 'assets/shio/BABI.png'
+  tikus: 'assets/shio/TIKUS.webp',
+  kerbau: 'assets/shio/KERBAU.webp',
+  harimau: 'assets/shio/HARIMAU.webp',
+  kelinci: 'assets/shio/KELINCI.webp',
+  naga: 'assets/shio/NAGA.webp',
+  ular: 'assets/shio/ULAR.webp',
+  kuda: 'assets/shio/KUDA.webp',
+  kambing: 'assets/shio/KAMBING.webp',
+  monyet: 'assets/shio/MONYET.webp',
+  ayam: 'assets/shio/AYAM.webp',
+  anjing: 'assets/shio/ANJING.webp',
+  babi: 'assets/shio/BABI.webp'
 };
 
 function downloadImage() {
