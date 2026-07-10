@@ -97,6 +97,12 @@ const backgrounds = {
    washington: 'assets/background/washington.webp'
 };
 
+/* =======================
+   IMAGE CACHE
+======================= */
+const bgCache = {};
+const shioCache = {};
+
 const shios = {
   none: null,
   tikus: 'assets/shio/TIKUS.png',
@@ -268,12 +274,10 @@ function drawTopN(text, x, y, lineHeight = 24){
 }
 
 function drawShio(name){
+
   if (!shios[name]) return;
 
-  const img = new Image();
-  img.src = shios[name];
-
-  img.onload = () => {
+  function draw(img){
 
     if (name === 'ayam') {
       ctx.drawImage(img, 330, 180, 130, 170);
@@ -288,7 +292,21 @@ function drawShio(name){
     // default semua shio lain
     ctx.drawImage(img, 335, 180, 130, 170);
 
+  }
+
+  if (shioCache[name]) {
+    draw(shioCache[name]);
+    return;
+  }
+
+  const img = new Image();
+
+  img.onload = () => {
+    shioCache[name] = img;
+    draw(img);
   };
+
+  img.src = shios[name];
 }
 
 /* =======================
@@ -305,17 +323,28 @@ function render(){
   const bgSrc = backgrounds[bgName];
   if (!bgSrc) return;
 
-  const bg = new Image();
-
-  bg.onload = () => {
+  function draw(img){
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
 
     drawData(bgName);
     drawShio(shioName);
+  }
+
+  // Gunakan cache jika sudah pernah dimuat
+  if (bgCache[bgSrc]) {
+    draw(bgCache[bgSrc]);
+    return;
+  }
+
+  const img = new Image();
+
+  img.onload = () => {
+    bgCache[bgSrc] = img;
+    draw(img);
   };
 
-  bg.src = bgSrc;
+  img.src = bgSrc;
 }
 
 /* =======================
