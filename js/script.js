@@ -92,8 +92,8 @@ const backgrounds = {
    '4d3': 'assets/background/4d3.webp',
    '4d2': 'assets/background/4d2.webp',
    '4d1': 'assets/background/4d1.webp',
-   '5dmalam': 'assets/background/5dmalam.webp',
-   '5dsore': 'assets/background/5dsore.webp',
+   '5dmalam': 'assets/background/5dmalam4.webp',
+   '5dsore': 'assets/background/5dsore4.webp',
    venice: 'assets/background/venice.webp',
    verona: 'assets/background/verona.webp',
    virginia: 'assets/background/virginia.webp',
@@ -168,6 +168,7 @@ const state = {
   cb: '',
   bbfs: '',
   top2d: '',
+  top3d: '',
   topN: '',
   pastResult: '',
   background: '',
@@ -175,21 +176,21 @@ const state = {
 };
 
 const layoutDefault = {
-  topN: { x: 660, y: 180 },
-  bbfs: { x: 205, y: 180 },
-  pastResult: { x: 660, y: 315 }
+  topN: { x: 660, y: 185 },
+  bbfs: { x: 90, y: 190 },
+  pastResult: { x: 220, y: 318 }
 };
 
 const layoutMap = {
   '5dmalam': {
     topN: { x: 655, y: 180 },
     bbfs: { x: 200, y: 180 },
-    pastResult: { x: 655, y: 315 }
+    pastResult: { x: 215, y: 318 }
   },
   '5dsore': {
     topN: { x: 655, y: 180 },
     bbfs: { x: 200, y: 180 },
-    pastResult: { x: 655, y: 315 }
+    pastResult: { x: 215, y: 318 }
   }
 };
 
@@ -206,7 +207,7 @@ const cleanNumber = val => String(val).replace(/[^0-9]/g, '');
 function cleanDash(val) {
   return String(val)
     .replace(forbidden, '')   // hanya top2d/top4d/top5d
-    .replace(/[^0-9-]/g, '')   // angka + dash
+    .replace(/[^0-9\-*/]/g, '')   // angka + dash
     .replace(/-+/g, '-')       // rapikan dash
     .replace(/^-+/, '');       // hapus dash depan
 }
@@ -243,7 +244,7 @@ function bind(id, key, cleaner) {
     apply(el.value);
   });
 
-  el.addEventListener('paste', (e) => {
+ el.addEventListener('paste', (e) => {
     e.preventDefault();
     let text = (e.clipboardData || window.clipboardData).getData('text');
     apply(text);
@@ -262,12 +263,20 @@ function drawData(bgName){
 
   ctx.fillText(tanggal, 55, 110);
 
-  ctx.fillText(state.kep, 90, 170);
-  ctx.fillText(state.ekor, 90, 230);
-  ctx.fillText(state.cm, 85, 293);
-  ctx.fillText(state.cb, 228, 270);
+  /*ctx.fillText(state.kep, 90, 170);
+  ctx.fillText(state.ekor, 90, 230);*/
+  ctx.fillText(state.cb, 105, 255);
+  ctx.fillText(state.cm, 90, 310);
 
-  drawTop2D(state.top2d, 530, 180);
+  function drawTop3D(text, x, y, lineHeight = 24) {
+  const items = String(text).split(/[-*/]/).filter(Boolean);
+
+  items.forEach((item, i) => {
+    ctx.fillText(item, x, y + (i * lineHeight));
+  });
+}
+  drawTop3D(state.top3d, 542, 175);
+  drawTop2D(state.top2d, 200, 190);
 
   const layout = layoutMap[bgName] || layoutDefault;
 
@@ -278,19 +287,23 @@ ctx.fillText(state.bbfs, layout.bbfs.x, layout.bbfs.y);
 ctx.fillText(state.pastResult, layout.pastResult.x, layout.pastResult.y);
 }
 
-function drawTop2D(text, x, y, lineHeight = 30){
+function drawTop2D(text, x, y, lineHeight = 30) {
 
-  const items = String(text).split('-').filter(Boolean);
+    const items = String(text)
+        .split(/[-*/]/)
+        .filter(Boolean);
 
-  for(let i = 0; i < items.length; i += 2){
-    const pair = `${items[i]}-${items[i+1] || ''}`;
-    ctx.fillText(pair, x, y + ((i/2) * lineHeight));
-  }
+    for (let i = 0; i < items.length; i += 3) {
+
+        const row = items.slice(i, i + 3).join('-');
+
+        ctx.fillText(row, x, y + ((i / 3) * lineHeight));
+    }
 }
 
 function drawTopN(text, x, y, lineHeight = 24){
 
-  const items = String(text).split('-').filter(Boolean);
+  const items = String(text).split(/[-*/]/).filter(Boolean);
 
   items.forEach((item, i) => {
     ctx.fillText(item, x, y + (i * lineHeight));
@@ -381,6 +394,7 @@ bind('kep', 'kep', cleanDash);
 bind('ekor', 'ekor', cleanDash);
 bind('cm', 'cm', cleanDash);
 bind('cb', 'cb', cleanDash);
+bind('top3d', 'top3d', cleanDash);
 bind('top2d', 'top2d', cleanDash);
 bind('topN', 'topN', cleanDash);
 
@@ -397,6 +411,7 @@ document.getElementById('background').addEventListener('change', e => {
   state.cm = '';
   state.cb = '';
   state.bbfs = '';
+  state.top3d = '';
   state.top2d = '';
   state.topN = '';
   state.pastResult = '';
@@ -408,6 +423,7 @@ document.getElementById('background').addEventListener('change', e => {
   document.getElementById('cm').value = '';
   document.getElementById('cb').value = '';
   document.getElementById('bbfs').value = '';
+  document.getElementById('top3d').value = '';
   document.getElementById('top2d').value = '';
   document.getElementById('topN').value = '';
   document.getElementById('pastResult').value = '';
