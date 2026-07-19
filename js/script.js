@@ -181,7 +181,7 @@ const layoutDefault = {
   pastResult: { x: 220, y: 318 }
 };
 
-const layoutMap = {
+/*const layoutMap = {
   '5dmalam': {
     topN: { x: 655, y: 180 },
     bbfs: { x: 200, y: 180 },
@@ -192,7 +192,7 @@ const layoutMap = {
     bbfs: { x: 200, y: 180 },
     pastResult: { x: 215, y: 318 }
   }
-};
+}; */
 
 /* =======================
    CLEANER (FIX UTAMA DI SINI)
