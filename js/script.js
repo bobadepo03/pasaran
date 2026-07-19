@@ -182,12 +182,12 @@ const layoutDefault = {
 };
 
   const layoutMap = {
-  '5DMALA4': {
+  '5dmalam': {
     topN: { x: 660, y: 185 },
     bbfs: { x: 90, y: 190 },
     pastResult: { x: 220, y: 318 }
   },
-  '5DSORE4': {
+  '5dsore': {
     topN: { x: 660, y: 185 },
     bbfs: { x: 90, y: 190 },
     pastResult: { x: 220, y: 318 }
