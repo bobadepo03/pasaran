@@ -181,6 +181,20 @@ const layoutDefault = {
   pastResult: { x: 220, y: 318 }
 };
 
+  const layoutMap = {
+  '5DMALA4': {
+    topN: { x: 660, y: 185 },
+    bbfs: { x: 90, y: 190 },
+    pastResult: { x: 220, y: 318 }
+  },
+  '5DSORE4': {
+    topN: { x: 660, y: 185 },
+    bbfs: { x: 90, y: 190 },
+    pastResult: { x: 220, y: 318 }
+  }
+};
+  
+
 /*const layoutMap = {
   '5dmalam': {
     topN: { x: 655, y: 180 },
