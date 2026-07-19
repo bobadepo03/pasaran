@@ -162,8 +162,8 @@ function downloadImage() {
    STATE
 ======================= */
 const state = {
-  kep: '',
-  ekor: '',
+  /*kep: '',
+  ekor: '',*/
   cm: '',
   cb: '',
   bbfs: '',
@@ -404,8 +404,8 @@ function render(){
 bind('bbfs', 'bbfs', cleanNumber);
 bind('pastResult', 'pastResult', cleanNumber);
 
-bind('kep', 'kep', cleanDash);
-bind('ekor', 'ekor', cleanDash);
+/*bind('kep', 'kep', cleanDash);
+bind('ekor', 'ekor', cleanDash);*/
 bind('cm', 'cm', cleanDash);
 bind('cb', 'cb', cleanDash);
 bind('top3d', 'top3d', cleanDash);
@@ -420,8 +420,8 @@ document.getElementById('background').addEventListener('change', e => {
   state.background = e.target.value;
 
   // reset state
-  state.kep = '';
-  state.ekor = '';
+ /* state.kep = '';
+  state.ekor = '';*/
   state.cm = '';
   state.cb = '';
   state.bbfs = '';
@@ -432,8 +432,8 @@ document.getElementById('background').addEventListener('change', e => {
   state.shio = 'none';
 
   // reset textbox
-  document.getElementById('kep').value = '';
-  document.getElementById('ekor').value = '';
+ /* document.getElementById('kep').value = '';
+  document.getElementById('ekor').value = '';*/
   document.getElementById('cm').value = '';
   document.getElementById('cb').value = '';
   document.getElementById('bbfs').value = '';
